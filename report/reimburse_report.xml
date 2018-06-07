@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="reimburse_report"
+            string="Print Reimburse"
+            model="account.voucher"
+            report_type="qweb-pdf"
+            file="base_custom/report/reimburse_report"
+            name="base_custom.report_reimburse_view" />
+
+        <template id="report_reimburse_view">
+             <t t-call="report.html_container">
+                <!--<t t-foreach="docs" t-as="doc">-->
+                     <!--<div class="page">-->
+                         <!--<div class="oe_structure"/>-->
+                            <!--<table id="meta-reimburse">-->
+                                <!--<tr>-->
+                                    <!--<td class="meta-head-reimburse">Vendor</td>-->
+                                    <!--<td class="meta-head-reimburse"><span t-field="doc.partner_id.name"/></td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td class="meta-head-reimburse">Reimburse Number</td>-->
+                                    <!--<td class="meta-head-reimburse"><span t-field="doc.number"/></td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td class="meta-head-reimburse">Company</td>-->
+                                    <!--<td class="meta-head-reimburse"><span t-field="doc.company_id.name"/></td>-->
+                                <!--</tr>-->
+                            <!--</table>-->
+                            <!--<table id="meta-reimburse-right">-->
+                                <!--<tr>-->
+                                    <!--<td class="meta-head-reimburse">Bill Date </td>-->
+                                    <!--<td class="meta-head-reimburse"><span t-field="doc.date" /></td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td class="meta-head-reimburse">Due Date</td>-->
+                                    <!--<td class="meta-head-reimburse"><span t-field="doc.date_due"/></td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td class="meta-head-reimburse">Journal Entry</td>-->
+                                    <!--<td class="meta-head-reimburse"><span t-field="doc.move_id"/></td>-->
+                                <!--</tr>-->
+                            <!--</table>-->
+
+                         <!--<t t-set="i" t-value="1" />-->
+                         <!--<table id="meta-1-reimburse">-->
+                                <!--<tr t-foreach="doc.invoice_line_ids" t-as="line" class="border-black">-->
+                                        <!--<th class="meta-head-1" width="4px">No.</th>-->
+                                        <!--<th class="meta-head-1" width="30%">Product</th>-->
+                                        <!--<th class="meta-head-1" width="70%">Description</th>-->
+                                        <!--<th class="meta-head-1">Qty</th>-->
+                                        <!--<th class="meta-head-1">Unit Price</th>-->
+                                <!--</tr>-->
+
+                                <!--<tr>-->
+                                    <!--<td></td>-->
+                                <!--</tr>-->
+                         <!--</table>-->
+                     <!--</div>-->
+                <!--</t>-->
+                 <span>Hello</span>
+             </t>
+        </template>
+    </data>
+</odoo>

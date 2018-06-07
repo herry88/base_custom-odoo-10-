@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="po_juvisk_new"
+            string="Print PO Juvisk"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            file="juvisk-new-custom/report/po_juvisk_new"
+            name="juvisk-new-custom.po_juvisk_view" />
+
+        <template id="po_juvisk_view">
+            <t t-call="report.html_container">
+                <div class="page">
+                    <h2>Purchase Order New</h2>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

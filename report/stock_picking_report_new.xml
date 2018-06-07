@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="stock_picking_report_new"
+            string="Print Stock Picking Juvisk"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            file="base_custom/report/stock_picking_new"
+            name="base_custom.stock_picking_report_view" />
+
+        <template id="stock_picking_report_view">
+            <t t-call="report.html_container">
+              <t t-foreach="docs" t-as="doc">
+                  <div class="oe_structure"/>
+                    <div class="page">
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div name="invoice_address" class="invoice_address" t-if="doc.move_lines and doc.move_lines[0].partner_id and doc.move_lines[0].partner_id.id != doc.partner_id.id">
+                                    <span><strong>Delivery Address:</strong></span>
+                                        <div t-field="doc.move_lines[0].partner_id"
+                                            t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True, "phone_icons": True}'/>
+                                </div>
+                                <div name="invoice_address" class="invoice_address" t-if="doc.picking_type_id.code != 'internal' and (not doc.move_lines or not doc.move_lines[0].partner_id) and doc.picking_type_id.warehouse_id.partner_id">
+                                        <span><strong>Warehouse Address:</strong></span>
+                                        <div t-field="doc.picking_type_id.warehouse_id.partner_id"
+                                            t-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": True, "phone_icons": True}'/>
+                                </div>
+                            </div>
+
+                            <table id="meta-picking" width="50%">
+                                <tr t-if="doc.picking_type_id.code=='incoming' and doc.partner_id">
+                                    <td class="meta-head-picking"><b>Vendor Address</b></td>
+                                    <td class="meta-head-picking"><span t-field="doc.partner_id"
+                                           t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True, "phone_icons": True}'/></td>
+                                </tr>
+                                <tr t-if="doc.picking_type_id.code=='outgoing' and doc.partner_id">
+                                    <td class="meta-head-picking"><b>Customer Address</b></td>
+                                    <td class="meta-head-picking"><span t-field="doc.partner_id"
+                                           t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True, "phone_icons": True}'/></td>
+                                </tr>
+                                <tr t-if="doc.picking_type_id.code=='internal' and doc.partner_id">
+                                    <td class="meta-picking"><strong>Warehouse Address:</strong></td>
+                                    <td class="meta-head-picking"><span t-field="doc.partner_id"
+                                           t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True, "phone_icons": True}'/></td>
+                                </tr>
+                                <tr>
+                                    <td class="meta-head-picking"><strong>Incoming Shipment Number</strong></td>
+                                    <td class="meta-head-picking"><span t-field="doc.name" /></td>
+                                </tr>
+                            </table>
+
+                            <t t-set="i" t-value="1" />
+                            <table class="meta-1-picking" width="100%">
+                                <tr>
+                                    <th class="meta-head-1" width="4px">No</th>
+                                    <th class="meta-head-1"><strong>Order (Origin)</strong></th>
+                                    <th class="meta-head-1"><strong>State</strong></th>
+                                    <th class="meta-head-1"><strong>Commitment Date</strong></th>
+                                    <th class="meta-head-1"><strong>Scheduled Date</strong></th>
+                                    <th class="meta-head-1"><strong>Vendor Reference</strong></th>
+                                </tr>
+                                <tr  t-if="doc.origin">
+                                    <td class="meta-head-1"><span t-esc="i"/>
+                                              <t t-set="i" t-value="i+1"/></td>
+                                    <td class="meta-head-1"><span t-field="doc.origin"/></td>
+                                    <td class="meta-head-1"><span t-field="doc.state"/></td>
+                                    <td class="meta-head-1"><span t-field="doc.date"/></td>
+                                    <td class="meta-head-1"><span t-field="doc.min_date"/></td>
+                                    <td class="meta-head-1" width="4px"></td>
+                                </tr>
+                            </table>
+                            <br /><br/>
+                             <t t-set="i" t-value="1" />
+                             <table id="meta-1-picking" width="100%">
+                                 <tr>
+                                     <th class="meta-head-1-picking" width="4px"><strong>No</strong></th>
+                                     <th class="meta-head-1-picking"><strong>Product</strong></th>
+                                     <th class="meta-head-1-picking" width="4px">Qty</th>
+                                     <th class="meta-head-1-picking"><strong>Actual Received</strong></th>
+                                     <th class="meta-head-1-picking"><strong>Note</strong></th>
+                                 </tr>
+                                 <t t-set="pack_operation_ids" t-value="doc.pack_operation_ids"/>
+                                 <t groups="base.group_portal" t-set="pack_operation_ids" t-value="doc.pack_operation_ids.sudo()"/>
+                                 <tr t-foreach="pack_operation_ids" t-as="stock">
+                                     <td class="meta-head-1-picking"><span t-esc="i"/>
+                                              <t t-set="i" t-value="i+1"/></td>
+                                     <td class="meta-head-1-picking"><span t-field="stock.product_id"/><br/>
+                                        <span t-field="stock.product_id.description_picking"/>
+                                        <t t-if="not stock.product_id and stock.package_id"><span  t-field="stock.package_id"/></t></td>
+                                     <td class="meta-head-1-picking"><span t-field="stock.product_qty"/> <span t-field="stock.product_uom_id" groups="product.group_uom"/></td>
+                                     <td class="meta-head-1-picking"></td>
+                                     <td class="meta-head-1-picking"></td>
+                                 </tr>
+                             </table>
+
+                        </div>
+                        <table id="meta-2">
+                            <tr>
+                                <td class="meta-head-2">Shipper</td>
+                                <td class="meta-head-2">Consignee</td>
+                            </tr>
+                            <tr>
+                                <td   class="meta-head-2" width="150" height="150px"></td>
+                                <td   class="meta-head-2" width="150" height="150px"></td>
+                            </tr>
+
+                            <tr >
+                                <td class="meta-head-2 " ><span t-field="doc.partner_id" /></td>
+                                <td class="meta-head-2 " >PT. Prasetia Juvisk Sinergi</td>
+                            </tr>
+                        </table>
+                    </div>
+              </t>
+            </t>
+        </template>
+    </data>
+</odoo>

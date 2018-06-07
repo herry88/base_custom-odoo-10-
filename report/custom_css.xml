@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="minimal_layout_inherit" inherit_id="report.minimal_layout">
+            <xpath expr="." position="inside" >
+                <link rel="stylesheet" href="/base_custom/static/src/css/invoice_report.css"/>
+                <link rel="stylesheet" href="/base_custom/static/src/css/account_payment.css"/>
+                <link rel="stylesheet" href="/base_custom/static/src/css/stock_picking.css"/>
+                <link rel="stylesheet" href="/base_custom/static/src/css/reimburse.css"/>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
